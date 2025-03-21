@@ -1,4 +1,4 @@
-""" This module contains the dataclasses for the ingestion process. """
+"""This module contains the dataclasses for the ingestion process."""
 
 from dataclasses import dataclass
 from pathlib import Path

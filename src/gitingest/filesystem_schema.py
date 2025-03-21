@@ -1,4 +1,4 @@
-""" Define the schema for the filesystem representation. """
+"""Define the schema for the filesystem representation."""
 
 from __future__ import annotations
 

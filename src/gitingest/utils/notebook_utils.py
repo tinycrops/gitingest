@@ -1,4 +1,4 @@
-""" Utilities for processing Jupyter notebooks. """
+"""Utilities for processing Jupyter notebooks."""
 
 import json
 import warnings

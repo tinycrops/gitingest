@@ -1,4 +1,4 @@
-""" Utility functions for checking whether a file is likely a text file or a binary file. """
+"""Utility functions for checking whether a file is likely a text file or a binary file."""
 
 from pathlib import Path
 

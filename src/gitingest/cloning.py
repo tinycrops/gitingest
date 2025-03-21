@@ -1,4 +1,4 @@
-""" This module contains functions for cloning a Git repository to a local path. """
+"""This module contains functions for cloning a Git repository to a local path."""
 
 import asyncio
 import os

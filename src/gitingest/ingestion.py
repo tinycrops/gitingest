@@ -1,4 +1,4 @@
-""" Functions to ingest and analyze a codebase directory or single file. """
+"""Functions to ingest and analyze a codebase directory or single file."""
 
 import warnings
 from pathlib import Path

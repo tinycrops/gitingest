@@ -1,4 +1,4 @@
-""" Main entry point for ingesting a source and processing its contents. """
+"""Main entry point for ingesting a source and processing its contents."""
 
 import asyncio
 import inspect
