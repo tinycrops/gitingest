@@ -1,4 +1,4 @@
-""" Utility functions for the ingestion process. """
+"""Utility functions for the ingestion process."""
 
 import locale
 import platform

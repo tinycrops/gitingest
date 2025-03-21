@@ -1,4 +1,4 @@
-""" Process a query by parsing input, cloning a repository, and generating a summary. """
+"""Process a query by parsing input, cloning a repository, and generating a summary."""
 
 from functools import partial
 

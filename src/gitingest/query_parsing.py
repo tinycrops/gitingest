@@ -1,4 +1,4 @@
-""" This module contains functions to parse and validate input sources and patterns. """
+"""This module contains functions to parse and validate input sources and patterns."""
 
 import re
 import uuid
