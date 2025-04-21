@@ -51,7 +51,26 @@ def get_important_files(repo_path):
     return exclude_patterns_set
 
 
-def process_repo_with_excludes(repo_path):
+def write_to_markdown(summary, tree, content, output_file="repo_analysis.md"):
+    """
+    Write the repository analysis data to a markdown file
+    """
+    with open(output_file, "w") as f:
+        f.write("# Repository Analysis\n\n")
+        
+        f.write("## Summary\n\n")
+        f.write(f"```\n{summary}\n```\n\n")
+        
+        f.write("## Important Files\n\n")
+        f.write(f"```\n{tree}\n```\n\n")
+        
+        f.write("## Content\n\n")
+        f.write(f"```\n{content}\n```\n\n")
+    
+    return output_file
+
+
+def process_repo_with_excludes(repo_path, output_file="repo_analysis.md"):
     """
     Process a repository using gitingest, first getting exclude patterns from Gemini,
     then fetching only the important files
@@ -74,13 +93,23 @@ def process_repo_with_excludes(repo_path):
     print("\n=== IMPORTANT FILES ===")
     print(tree)
     
+    # Write the data to a markdown file
+    markdown_file = write_to_markdown(summary, tree, content, output_file)
+    print(f"\nRepository analysis written to: {markdown_file}")
+    
     return summary, tree, content
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python ingest.py <repository_path_or_url>")
+        print("Usage: python ingest.py <repository_path_or_url> [output_file]")
         sys.exit(1)
     
     repo_path = sys.argv[1]
-    process_repo_with_excludes(repo_path)
+    
+    # Allow specifying an output file as a second argument
+    output_file = "repo_analysis.md"
+    if len(sys.argv) > 2:
+        output_file = sys.argv[2]
+    
+    process_repo_with_excludes(repo_path, output_file)
