@@ -20,7 +20,7 @@ def get_important_files(repo_path):
     summary, tree, content = gitingest_ingest(repo_path)
     repo_data = summary + "\n" + tree + "\n" + content
 
-    model = "gemini-2.0-flash"
+    model = "gemini-2.5-flash-preview-04-17"
     contents = [
         types.Content(
             role="user",
