@@ -16,11 +16,34 @@ def get_important_files(repo_path):
         api_key=os.environ.get("GEMINI_API_KEY"),
     )
 
-    # First, get repository data
-    summary, tree, content = gitingest_ingest(repo_path)
-    repo_data = summary + "\n" + tree + "\n" + content
+    # First, get repository data with a very small file size limit for Gemini
+    summary, tree, content = gitingest_ingest(
+        source=repo_path,
+        max_file_size=10 * 1024  # 10KB limit for Gemini to stay under token limits
+    )
 
-    model = "gemini-2.0-flash"
+    # Truncate content to just show file paths and first few lines of each file
+    truncated_content = []
+    current_file = None
+    line_count = 0
+    for line in content.split('\n'):
+        if line.startswith('=== '):  # New file marker
+            if current_file and line_count > 0:
+                truncated_content.append(f"... ({line_count} more lines)\n")
+            current_file = line
+            truncated_content.append(line + '\n')
+            line_count = 0
+        elif current_file:
+            if line_count < 40:  # Only keep first 20 lines of each file
+                truncated_content.append(line + '\n')
+            line_count += 1
+    if current_file and line_count > 0:
+        truncated_content.append(f"... ({line_count} more lines)\n")
+
+    # Combine data with truncated content
+    repo_data = summary + "\n" + tree + "\n" + "".join(truncated_content)
+
+    model = "gemini-2.5-flash-preview-05-20"
     contents = [
         types.Content(
             role="user",
@@ -55,7 +78,7 @@ def write_to_markdown(summary, tree, content, output_file="repo_analysis.md"):
     """
     Write the repository analysis data to a markdown file
     """
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding='utf-8') as f:
         f.write("# Repository Analysis\n\n")
         
         f.write("## Summary\n\n")
@@ -77,11 +100,11 @@ def process_repo_with_excludes(repo_path, output_file="repo_analysis.md"):
     """
     print(f"Analyzing repository: {repo_path}")
     
-    # Get exclude patterns from Gemini
+    # Get exclude patterns from Gemini (using 50KB limit)
     exclude_patterns = get_important_files(repo_path)
     print(f"Excluding patterns: {exclude_patterns}")
     
-    # Fetch only the important files using the exclude patterns
+    # Fetch repository data without applying exclude patterns to get the full tree
     summary, tree, content = gitingest_ingest(
         source=repo_path,
         exclude_patterns=exclude_patterns
