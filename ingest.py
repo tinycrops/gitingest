@@ -43,7 +43,7 @@ def get_important_files(repo_path):
     # Combine data with truncated content
     repo_data = summary + "\n" + tree + "\n" + "".join(truncated_content)
 
-    model = "gemini-2.5-flash-preview-05-20"
+    model = "gemini-2.5-flash"
     contents = [
         types.Content(
             role="user",
